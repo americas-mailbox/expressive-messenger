@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Xtreamwayz\Expressive\Messenger\Transport;
 
-use Interop\Queue\PsrContext;
+use Interop\Queue\Context;
 use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\Exception\TransportException;
 use Symfony\Component\Messenger\Transport\Serialization\Serializer;
 use Symfony\Component\Messenger\Transport\TransportInterface;
 use Xtreamwayz\Expressive\Messenger\Exception\RejectMessageException;
@@ -16,7 +17,7 @@ class EnqueueTransport implements TransportInterface
     /** @var Serializer */
     private $serializer;
 
-    /** @var PsrContext */
+    /** @var Context */
     private $psrContext;
 
     /** @var string */
@@ -28,7 +29,7 @@ class EnqueueTransport implements TransportInterface
     /** @var bool */
     private $shouldStop;
 
-    public function __construct(Serializer $serializer, PsrContext $psrContext, string $queueName)
+    public function __construct(Serializer $serializer, Context $psrContext, string $queueName)
     {
         $this->serializer     = $serializer;
         $this->psrContext     = $psrContext;
@@ -96,5 +97,25 @@ class EnqueueTransport implements TransportInterface
     public function stop() : void
     {
         $this->shouldStop = true;
+    }
+
+    /**
+     * Acknowledge that the passed message was handled.
+     *
+     * @throws TransportException If there is an issue communicating with the transport
+     */
+    public function ack(Envelope $envelope): void
+    {
+        // TODO: Implement ack() method.
+    }
+
+    /**
+     * Called when handling the message failed and it should not be retried.
+     *
+     * @throws TransportException If there is an issue communicating with the transport
+     */
+    public function reject(Envelope $envelope): void
+    {
+        // TODO: Implement reject() method.
     }
 }

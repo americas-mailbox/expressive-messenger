@@ -7,6 +7,7 @@ namespace Xtreamwayz\Expressive\Messenger\Transport;
 use Enqueue\AmqpBunny\AmqpConnectionFactory as AmqpBunnyConnectionFactory;
 use Enqueue\AmqpExt\AmqpConnectionFactory as AmqpExtConnectionFactory;
 use Enqueue\AmqpLib\AmqpConnectionFactory as AmqpLibConnectionFactory;
+use Enqueue\ConnectionFactoryFactory;
 use Enqueue\Dbal\DbalConnectionFactory;
 use Enqueue\Fs\FsConnectionFactory;
 use Enqueue\Gearman\GearmanConnectionFactory;
@@ -61,10 +62,10 @@ class EnqueueTransportFactory
     public function __invoke(ContainerInterface $container) : TransportInterface
     {
         // Version 0.8.35
-        $psrContext = $this->dsnToConnectionFactory($this->dsn)->createContext();
+        //$psrContext = $this->dsnToConnectionFactory($this->dsn)->createContext();
 
         // Use with enqueue 0.9
-        //$psrContext = (new ConnectionFactoryFactory())->create($this->dsn)->createContext();
+        $psrContext = (new ConnectionFactoryFactory())->create($this->dsn)->createContext();
 
         return new EnqueueTransport(
             $container->get(Serializer::class),
